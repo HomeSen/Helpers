@@ -1,0 +1,12 @@
+<mobiles>
+	<mobile>
+		<id></id>
+		<countryID></countryID>
+		<name></name>
+	</mobile>
+	<mobile>
+		<id></id>
+		<countryID></countryID>
+		<name></name>
+	</mobile>
+</mobiles>

@@ -1,0 +1,18 @@
+<countries>
+	<country>
+		<id></id>
+		<countryCode></countryCode>
+		<name></name>
+		<sameAreaRule></sameAreaRule>
+		<longDistanceRule></longDistanceRule>
+		<internationalRule></internationalRule>
+	</country>
+	<country>
+		<id></id>
+		<countryCode></countryCode>
+		<name></name>
+		<sameAreaRule></sameAreaRule>
+		<longDistanceRule></longDistanceRule>
+		<internationalRule></internationalRule>
+	</country>
+</countries>

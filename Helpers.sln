@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers", "Helpers\Helpers.csproj", "{4B65C969-30E4-4FB7-A44D-7AA061E0A387}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers.Tests", "Helpers.Tests\Helpers.Tests.csproj", "{F6CB323F-83FB-4BEE-8BB6-7723C101D1C3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B65C969-30E4-4FB7-A44D-7AA061E0A387}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B65C969-30E4-4FB7-A44D-7AA061E0A387}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B65C969-30E4-4FB7-A44D-7AA061E0A387}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B65C969-30E4-4FB7-A44D-7AA061E0A387}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6CB323F-83FB-4BEE-8BB6-7723C101D1C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6CB323F-83FB-4BEE-8BB6-7723C101D1C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6CB323F-83FB-4BEE-8BB6-7723C101D1C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6CB323F-83FB-4BEE-8BB6-7723C101D1C3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
