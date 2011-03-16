@@ -37,6 +37,21 @@ namespace HomeSen.Helpers.Conversion
 
         #endregion
 
+
+        #region Fields
+        private static Base.AbstractPhoneNumberData dataController = new PhoneNumberData();
+        #endregion
+
+
+        #region Properties
+        internal Base.AbstractPhoneNumberData DataController
+        {
+            get { return dataController; }
+            set { dataController = value; }
+        }
+        #endregion
+
+
         public static string FormatPhoneNumber(string number, DISTANCE_RULE distanceRule)
         {
             if (String.IsNullOrEmpty(number))
@@ -138,7 +153,7 @@ namespace HomeSen.Helpers.Conversion
             int length = Math.Min(code.Length, 1 + MAX_COUNTRYCODE_LENGTH + MAX_AREACODE_LENGTH);
             code = code.Substring(0, length);
 
-            result = PhoneNumberData.GetAreaCode(code);
+            result = dataController.GetAreaCode(code);
 
             return result;
         }
@@ -161,7 +176,7 @@ namespace HomeSen.Helpers.Conversion
             if (String.IsNullOrEmpty(areaCode))
                 return String.Empty;
 
-            result = PhoneNumberData.GetCountryIDFromXML(areaCode);
+            result = dataController.GetCountryIDFromXML(areaCode);
 
             return result;
         }
@@ -183,7 +198,7 @@ namespace HomeSen.Helpers.Conversion
             else
                 return GetUserCountryID();
 
-            result = PhoneNumberData.GetCountryCode(code);
+            result = dataController.GetCountryCode(code);
 
             return result;
         }
@@ -221,12 +236,12 @@ namespace HomeSen.Helpers.Conversion
 
         public static string GetUserCountryID()
         {
-            return PhoneNumberData.GetUserCountryID();
+            return dataController.GetUserCountryID();
         }
 
         public static string GetUserAreaCode()
         {
-            return PhoneNumberData.GetUserAreaCode();
+            return dataController.GetUserAreaCode();
         }
 
         private static string GetUserPhoneFormat(DISTANCE_RULE distanceRule)
@@ -241,9 +256,9 @@ namespace HomeSen.Helpers.Conversion
 
             int userCountryID = int.Parse(id);
 
-            result = PhoneNumberData.GetPhoneFormatFromRegistry(userCountryID, distanceRule);
+            result = dataController.GetPhoneFormatFromRegistry(userCountryID, distanceRule);
             if (String.IsNullOrEmpty(result))
-                result = PhoneNumberData.GetPhoneFormatFromXML(userCountryID, distanceRule);
+                result = dataController.GetPhoneFormatFromXML(userCountryID, distanceRule);
 
             return result;
         }
@@ -256,9 +271,9 @@ namespace HomeSen.Helpers.Conversion
         {
             string result = "";
 
-            result = PhoneNumberData.GetCountryNameFromRegistry(countryID);
+            result = dataController.GetCountryNameFromRegistry(countryID);
             if (String.IsNullOrEmpty(result))
-                result = PhoneNumberData.GetCountryNameFromXML(countryID);
+                result = dataController.GetCountryNameFromXML(countryID);
 
             return result;
         }
@@ -284,9 +299,9 @@ namespace HomeSen.Helpers.Conversion
 
             string result = "";
 
-            result = PhoneNumberData.GetCityName(areaCode);
+            result = dataController.GetCityName(areaCode);
             if (String.IsNullOrEmpty(result))
-                result = PhoneNumberData.GetCarrierName(areaCode);
+                result = dataController.GetCarrierName(areaCode);
 
             return result;
         }

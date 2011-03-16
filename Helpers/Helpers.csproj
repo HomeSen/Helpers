@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\AbstractPhoneNumberData.cs" />
     <Compile Include="Conversion\PhoneNumberData.cs" />
     <Compile Include="Conversion\PhoneNumbers.cs" />
     <Compile Include="Conversion\StringCreator.cs" />
