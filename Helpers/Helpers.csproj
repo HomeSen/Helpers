@@ -50,12 +50,16 @@
     <Compile Include="Crypto\Symmetric.cs" />
     <Compile Include="Interfaces\IPhoneNumberDataRegistry.cs" />
     <Compile Include="Interfaces\IPhoneNumberDataXml.cs" />
+    <Compile Include="Interfaces\Registry\IRegistry.cs" />
+    <Compile Include="Interfaces\Registry\IRegistryKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Proxies\Registry.cs" />
+    <Compile Include="Proxies\RegistryKey.cs" />
     <Compile Include="Types\PhoneNumberConstants.cs" />
     <Compile Include="Types\PhoneNumberEnums.cs" />
   </ItemGroup>
