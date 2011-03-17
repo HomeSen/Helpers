@@ -1,29 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Data;
+using HomeSen.Helpers.Types;
 using System.Xml;
-using Microsoft.Win32;
 
 namespace HomeSen.Helpers.Conversion
 {
-    internal class PhoneNumberData
+    class PhoneNumberDataXml : Interfaces.IPhoneNumberDataXml
     {
         #region Fields
 
-        private static Dictionary<DISTANCE_RULE, string> distanceRuleXmlNameMap = null;
-        private static bool initialized = false;
-
-        private const string REGISTRY_LOCATIONS = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Telephony\Locations";
-        private const string REGISTRY_COUNTRYLIST_LEGACY = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Telephony\CountryList";
-        private const string REGISTRY_COUNTRYLIST_MODERN = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Telephony\Country List";
+        private Dictionary<DISTANCE_RULE, string> distanceRuleXmlNameMap = null;
+        private bool initialized = false;
 
         #endregion
 
 
         #region Initialization
 
-        public static void Initialize()
+        private void Initialize()
         {
             if (initialized)
                 return;
@@ -39,15 +34,27 @@ namespace HomeSen.Helpers.Conversion
         #endregion
 
 
-        #region XML Data
+        #region Constructor
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PhoneNumberDataXml"/> class.
+        /// </summary>
+        public PhoneNumberDataXml()
+        {
+            Initialize();
+        }
+
+        #endregion
+
+
+        #region IDs / Codes
 
         /// <summary>
         /// Gets the country ID from the XML resource.
         /// </summary>
         /// <param name="areaCode">The area code.</param>
         /// <returns>A string containing the country ID for the given area code or <value>String.Empty</value>, if an error occured.</returns>
-        public static string GetCountryIDFromXML(string areaCode)
+        public string GetCountryID(string areaCode)
         {
             if (String.IsNullOrEmpty(areaCode))
                 return String.Empty;
@@ -67,7 +74,7 @@ namespace HomeSen.Helpers.Conversion
             {
                 XmlDocument mobiles = new XmlDocument();
                 mobiles.LoadXml(Properties.Resources.Mobiles);
-                XmlNode mobile = mobiles.SelectSingleNode(@"/mobiles/mobile[id='" + areaCode +"']");
+                XmlNode mobile = mobiles.SelectSingleNode(@"/mobiles/mobile[id='" + areaCode + "']");
                 if (mobile != null)
                 {
                     try { result = mobile.SelectSingleNode("countryID").InnerText; }
@@ -79,40 +86,12 @@ namespace HomeSen.Helpers.Conversion
         }
 
         /// <summary>
-        /// Gets the phone format from the XML resource.
-        /// </summary>
-        /// <param name="countryID">The country ID.</param>
-        /// <param name="distanceRule">The distance rule.</param>
-        /// <returns>The string representation of the country's selected phone number format or <value>String.Empty</value>, if an error occured.</returns>
-        public static string GetPhoneFormatFromXML(int countryID, DISTANCE_RULE distanceRule)
-        {
-            if (distanceRule == DISTANCE_RULE.CANONICAL)
-                return PhoneNumbers.CANONICAL_FORMAT;
-
-            if (initialized == false)
-                Initialize();
-
-            string result = "";
-
-            XmlDocument countries = new XmlDocument();
-            countries.LoadXml(Properties.Resources.Countries);
-            XmlNode country = countries.SelectSingleNode(@"/countries/country[id=" + countryID + "]");
-            if (country == null)
-                return String.Empty;
-
-            try { result = country.SelectSingleNode(distanceRuleXmlNameMap[distanceRule]).InnerText; }
-            catch { result = String.Empty; }
-
-            return result;
-        }
-
-        /// <summary>
         /// Gets the country code for a given phone number fragment by 
         /// iteratively matching the fragment against valid country codes.
         /// </summary>
         /// <param name="code">The phone number fragment.</param>
         /// <returns>A string containing the country code for the given phone number fragment or an empty string, if no valid country code matches the fragment or an error occured.</returns>
-        public static string GetCountryCode(string code)
+        public string GetCountryCode(string code)
         {
             if (String.IsNullOrEmpty(code))
                 return String.Empty;
@@ -145,7 +124,7 @@ namespace HomeSen.Helpers.Conversion
         /// </summary>
         /// <param name="code">The phone number fragment.</param>
         /// <returns>A string containing the area/carrier code for the given phone number fragment or an empty string, if no valid area/carrier code matches the fragment or an error occured.</returns>
-        public static string GetAreaCode(string code)
+        public string GetAreaCode(string code)
         {
             if (String.IsNullOrEmpty(code))
                 return String.Empty;
@@ -176,7 +155,50 @@ namespace HomeSen.Helpers.Conversion
             return result;
         }
 
-        public static string GetCountryNameFromXML(int countryID)
+        #endregion
+
+
+        #region Formats
+
+        /// <summary>
+        /// Gets the phone format from the XML resource.
+        /// </summary>
+        /// <param name="countryID">The country ID.</param>
+        /// <param name="distanceRule">The distance rule.</param>
+        /// <returns>The string representation of the country's selected phone number format or <value>String.Empty</value>, if an error occured.</returns>
+        public string GetPhoneFormat(int countryID, DISTANCE_RULE distanceRule)
+        {
+            if (distanceRule == DISTANCE_RULE.CANONICAL)
+                return PhoneNumberConstants.CANONICAL_FORMAT;
+
+            if (initialized == false)
+                Initialize();
+
+            string result = "";
+
+            XmlDocument countries = new XmlDocument();
+            countries.LoadXml(Properties.Resources.Countries);
+            XmlNode country = countries.SelectSingleNode(@"/countries/country[id=" + countryID + "]");
+            if (country == null)
+                return String.Empty;
+
+            try { result = country.SelectSingleNode(distanceRuleXmlNameMap[distanceRule]).InnerText; }
+            catch { result = String.Empty; }
+
+            return result;
+        }
+
+        #endregion
+
+
+        #region Names
+
+        /// <summary>
+        /// Gets the name of the country for the given ID.
+        /// </summary>
+        /// <param name="countryID">The country ID.</param>
+        /// <returns>A string containing the name of the country for the given ID or <value>String.Empty</value>, if an error occured.</returns>
+        public string GetCountryName(int countryID)
         {
             string result = "";
 
@@ -192,7 +214,12 @@ namespace HomeSen.Helpers.Conversion
             return result;
         }
 
-        public static string GetCityName(string areaCode)
+        /// <summary>
+        /// Gets the name of the city for the given area code.
+        /// </summary>
+        /// <param name="areaCode">The area code.</param>
+        /// <returns>A string containing the name of the city for the given area code or <value>String.Empty</value>, if an error occured.</returns>
+        public string GetCityName(string areaCode)
         {
             if (String.IsNullOrEmpty(areaCode))
                 return String.Empty;
@@ -201,7 +228,7 @@ namespace HomeSen.Helpers.Conversion
 
             XmlDocument cities = new XmlDocument();
             cities.LoadXml(Properties.Resources.Cities);
-            XmlNode city = cities.SelectSingleNode(@"/cities/city[id='" + areaCode +"']");
+            XmlNode city = cities.SelectSingleNode(@"/cities/city[id='" + areaCode + "']");
             if (city == null)
                 return String.Empty;
 
@@ -211,7 +238,12 @@ namespace HomeSen.Helpers.Conversion
             return result;
         }
 
-        public static string GetCarrierName(string areaCode)
+        /// <summary>
+        /// Gets the name of the carrier for the given area code.
+        /// </summary>
+        /// <param name="areaCode">The area code.</param>
+        /// <returns>A string containing the name of the carrier for the given area code or <value>String.Empty</value>, if an error occured.</returns>
+        public string GetCarrierName(string areaCode)
         {
             if (String.IsNullOrEmpty(areaCode))
                 return String.Empty;
@@ -226,102 +258,6 @@ namespace HomeSen.Helpers.Conversion
 
             try { result = mobile.SelectSingleNode("name").InnerText; }
             catch { result = String.Empty; }
-
-            return result;
-        }
-
-        #endregion
-
-
-        #region Registry Data
-
-        /// <summary>
-        /// Gets the user's country ID from the Registry.
-        /// </summary>
-        /// <returns>A string containing the user's country ID or <value>String.Empty</value>, if an error occured.</returns>
-        public static string GetUserCountryID()
-        {
-            RegistryKey hklmLocations = Registry.LocalMachine.OpenSubKey(REGISTRY_LOCATIONS);
-            try
-            {
-                object currentID = hklmLocations.GetValue("CurrentID");
-                if (currentID == null)
-                    return String.Empty;
-                RegistryKey currentLocation = hklmLocations.OpenSubKey("Location" + currentID);
-                object country = currentLocation.GetValue("Country");
-                if (country == null)
-                    return String.Empty;
-
-                return country.ToString();
-            }
-            catch { return String.Empty; }
-        }
-
-        /// <summary>
-        /// Gets the user's area code from the Registry.
-        /// </summary>
-        /// <returns>A string containing the user's area code or <value>String.Empty</value>, if an error occured.</returns>
-        public static string GetUserAreaCode()
-        {
-            RegistryKey hklmLocations = Registry.LocalMachine.OpenSubKey(REGISTRY_LOCATIONS);
-            try
-            {
-                object currentID = hklmLocations.GetValue("CurrentID");
-                if (currentID == null)
-                    return String.Empty;
-                RegistryKey currentLocation = hklmLocations.OpenSubKey("Location" + currentID);
-                object areaCode = currentLocation.GetValue("AreaCode");
-                if (areaCode == null)
-                    return String.Empty;
-
-                return areaCode.ToString();
-            }
-            catch { return String.Empty; }
-        }
-
-        /// <summary>
-        /// Gets the phone format from registry.
-        /// </summary>
-        /// <param name="countryCode">The country code.</param>
-        /// <param name="distanceRule">The distance rule.</param>
-        /// <returns>The string representation of the country's selected phone number format or <value>String.Empty</value>, if an error occured.</returns>
-        public static string GetPhoneFormatFromRegistry(int countryCode, DISTANCE_RULE distanceRule)
-        {
-            if (distanceRule == DISTANCE_RULE.CANONICAL)
-                return PhoneNumbers.CANONICAL_FORMAT;
-
-            RegistryKey hklmCountry = Registry.LocalMachine.OpenSubKey(REGISTRY_COUNTRYLIST_LEGACY);
-            if (hklmCountry == null)
-                hklmCountry = Registry.LocalMachine.OpenSubKey(REGISTRY_COUNTRYLIST_MODERN);
-
-            try
-            {
-                hklmCountry = hklmCountry.OpenSubKey(countryCode.ToString());
-                object curFormat = hklmCountry.GetValue(distanceRule.ToString());
-                if (curFormat != null)
-                    return curFormat.ToString();
-            }
-            catch { }
-
-            return String.Empty;
-        }
-
-        public static string GetCountryNameFromRegistry(int countryID)
-        {
-            string result = "";
-
-            RegistryKey hklmCountry = Registry.LocalMachine.OpenSubKey(REGISTRY_COUNTRYLIST_LEGACY);
-            if (hklmCountry == null)
-                hklmCountry = Registry.LocalMachine.OpenSubKey(REGISTRY_COUNTRYLIST_MODERN);
-            if (hklmCountry == null)
-                return String.Empty;
-
-            try
-            {
-                hklmCountry = hklmCountry.OpenSubKey(countryID.ToString());
-                result = hklmCountry.GetValue("Name").ToString();
-            }
-            catch { }
 
             return result;
         }

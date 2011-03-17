@@ -3,50 +3,59 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Win32;
 using System.Text.RegularExpressions;
+using HomeSen.Helpers.Types;
+using HomeSen.Helpers.Interfaces;
 
 namespace HomeSen.Helpers.Conversion
 {
-    #region Enums
-
-    public enum DISTANCE_RULE
-    {
-        SameAreaRule,
-        LongDistanceRule,
-        InternationalRule,
-        CANONICAL
-    }
-
-    #endregion
-
     public class PhoneNumbers
     {
-        #region Constants
+        #region Fields
 
-        private const int MAX_COUNTRYCODE_LENGTH = 4;
-        private const int MAX_AREACODE_LENGTH = 8;
-
-        /// <summary>
-        /// String representation of the canonical phone number format.
-        /// </summary>
-        public static string CANONICAL_FORMAT = "+E (F) G";
-
-        /// <summary>
-        /// String representation of the RegEx-pattern for valid phone numbers.
-        /// </summary>
-        public static string PHONE_NUMBER_PATTERN = @"^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$";
+        private IPhoneNumberDataXml xmlDataProvider = null;
+        private IPhoneNumberDataRegistry registryDataProvider = null;
 
         #endregion
 
-        public static string FormatPhoneNumber(string number, DISTANCE_RULE distanceRule)
+
+        #region Constructors
+
+        public PhoneNumbers()
+        {
+            this.xmlDataProvider = new PhoneNumberDataXml();
+            this.registryDataProvider = new PhoneNumberDataRegistry();
+        }
+
+        internal PhoneNumbers(IPhoneNumberDataXml xmlDataProvider)
+        {
+            this.xmlDataProvider = xmlDataProvider;
+            this.registryDataProvider = new PhoneNumberDataRegistry();
+        }
+
+        internal PhoneNumbers(IPhoneNumberDataRegistry registryDataProvider)
+        {
+            this.xmlDataProvider = new PhoneNumberDataXml();
+            this.registryDataProvider = registryDataProvider;
+        }
+
+        internal PhoneNumbers(IPhoneNumberDataXml xmlDataProvider, IPhoneNumberDataRegistry registryDataProvider)
+        {
+            this.xmlDataProvider = xmlDataProvider;
+            this.registryDataProvider = registryDataProvider;
+        }
+
+        #endregion
+
+        public string FormatPhoneNumber(string number, DISTANCE_RULE distanceRule)
         {
             if (String.IsNullOrEmpty(number))
                 return String.Empty;
-            if (Regex.IsMatch(number, PHONE_NUMBER_PATTERN) == false)
+            if (Regex.IsMatch(number, PhoneNumberConstants.PHONE_NUMBER_PATTERN) == false)
                 return String.Empty;
 
             string result = "";
             if (distanceRule == DISTANCE_RULE.CANONICAL)
-                result = CANONICAL_FORMAT;
+                result = PhoneNumberConstants.CANONICAL_FORMAT;
             else
                 result = GetUserPhoneFormat(distanceRule);
 
@@ -74,13 +83,13 @@ namespace HomeSen.Helpers.Conversion
 
         #region Area Data
 
-        private static string GetAreaCode(string number, string countryCode)
+        private string GetAreaCode(string number, string countryCode)
         {
             if (String.IsNullOrEmpty(countryCode))
                 return String.Empty;
             if (String.IsNullOrEmpty(number))
                 return String.Empty;
-            if (Regex.IsMatch(number, PHONE_NUMBER_PATTERN) == false)
+            if (Regex.IsMatch(number, PhoneNumberConstants.PHONE_NUMBER_PATTERN) == false)
                 return String.Empty;
 
             string result = "";
@@ -96,11 +105,11 @@ namespace HomeSen.Helpers.Conversion
             return result;
         }
 
-        private static string GetFullAreaCode(string number)
+        private string GetFullAreaCode(string number)
         {
             if (String.IsNullOrEmpty(number))
                 return String.Empty;
-            if (Regex.IsMatch(number, PHONE_NUMBER_PATTERN) == false)
+            if (Regex.IsMatch(number, PhoneNumberConstants.PHONE_NUMBER_PATTERN) == false)
                 return String.Empty;
 
             string countryCode = GetCountryCode(number);
@@ -110,11 +119,11 @@ namespace HomeSen.Helpers.Conversion
             return GetFullAreaCode(number, countryCode);
         }
 
-        private static string GetFullAreaCode(string number, string countryCode)
+        private string GetFullAreaCode(string number, string countryCode)
         {
             if (String.IsNullOrEmpty(number))
                 return String.Empty;
-            if (Regex.IsMatch(number, PHONE_NUMBER_PATTERN) == false)
+            if (Regex.IsMatch(number, PhoneNumberConstants.PHONE_NUMBER_PATTERN) == false)
                 return String.Empty;
 
             string result = "";
@@ -135,10 +144,10 @@ namespace HomeSen.Helpers.Conversion
                     code = "+" + countryCode + areaCode + number;
             }
 
-            int length = Math.Min(code.Length, 1 + MAX_COUNTRYCODE_LENGTH + MAX_AREACODE_LENGTH);
+            int length = Math.Min(code.Length, 1 + PhoneNumberConstants.MAX_COUNTRYCODE_LENGTH + PhoneNumberConstants.MAX_AREACODE_LENGTH);
             code = code.Substring(0, length);
 
-            result = PhoneNumberData.GetAreaCode(code);
+            result = xmlDataProvider.GetAreaCode(code);
 
             return result;
         }
@@ -148,11 +157,11 @@ namespace HomeSen.Helpers.Conversion
 
         #region Country Data
 
-        public static string GetCountryID(string number)
+        public string GetCountryID(string number)
         {
             if (String.IsNullOrEmpty(number))
                 return String.Empty;
-            if (Regex.IsMatch(number, PHONE_NUMBER_PATTERN) == false)
+            if (Regex.IsMatch(number, PhoneNumberConstants.PHONE_NUMBER_PATTERN) == false)
                 return String.Empty;
 
             string result = "";
@@ -161,29 +170,29 @@ namespace HomeSen.Helpers.Conversion
             if (String.IsNullOrEmpty(areaCode))
                 return String.Empty;
 
-            result = PhoneNumberData.GetCountryIDFromXML(areaCode);
+            result = xmlDataProvider.GetCountryID(areaCode);
 
             return result;
         }
 
-        private static string GetCountryCode(string number)
+        private string GetCountryCode(string number)
         {
             if (String.IsNullOrEmpty(number))
                 return String.Empty;
-            if (Regex.IsMatch(number, PHONE_NUMBER_PATTERN) == false)
+            if (Regex.IsMatch(number, PhoneNumberConstants.PHONE_NUMBER_PATTERN) == false)
                 return String.Empty;
 
             string result = "";
             string code = "";
 
             if (number.StartsWith("00"))
-                code = number.Substring(2, MAX_COUNTRYCODE_LENGTH);
+                code = number.Substring(2, PhoneNumberConstants.MAX_COUNTRYCODE_LENGTH);
             else if (number.StartsWith("+"))
-                code = number.Substring(1, MAX_COUNTRYCODE_LENGTH);
+                code = number.Substring(1, PhoneNumberConstants.MAX_COUNTRYCODE_LENGTH);
             else
                 return GetUserCountryID();
 
-            result = PhoneNumberData.GetCountryCode(code);
+            result = xmlDataProvider.GetCountryCode(code);
 
             return result;
         }
@@ -191,11 +200,11 @@ namespace HomeSen.Helpers.Conversion
         #endregion
 
 
-        private static string GetLocalNumber(string number, string countryCode, string areaCode)
+        private string GetLocalNumber(string number, string countryCode, string areaCode)
         {
             if (String.IsNullOrEmpty(number) || String.IsNullOrEmpty(countryCode) || String.IsNullOrEmpty(areaCode))
                 return String.Empty;
-            if (Regex.IsMatch(number, PHONE_NUMBER_PATTERN) == false)
+            if (Regex.IsMatch(number, PhoneNumberConstants.PHONE_NUMBER_PATTERN) == false)
                 return String.Empty;
 
             string result = "";
@@ -219,20 +228,20 @@ namespace HomeSen.Helpers.Conversion
 
         #region User Settings
 
-        public static string GetUserCountryID()
+        public string GetUserCountryID()
         {
-            return PhoneNumberData.GetUserCountryID();
+            return registryDataProvider.GetUserCountryID();
         }
 
-        public static string GetUserAreaCode()
+        public string GetUserAreaCode()
         {
-            return PhoneNumberData.GetUserAreaCode();
+            return registryDataProvider.GetUserAreaCode();
         }
 
-        private static string GetUserPhoneFormat(DISTANCE_RULE distanceRule)
+        private string GetUserPhoneFormat(DISTANCE_RULE distanceRule)
         {
             if (distanceRule == DISTANCE_RULE.CANONICAL)
-                return CANONICAL_FORMAT;
+                return PhoneNumberConstants.CANONICAL_FORMAT;
 
             string result = "";
             string id = GetUserCountryID();
@@ -241,9 +250,9 @@ namespace HomeSen.Helpers.Conversion
 
             int userCountryID = int.Parse(id);
 
-            result = PhoneNumberData.GetPhoneFormatFromRegistry(userCountryID, distanceRule);
+            result = registryDataProvider.GetPhoneFormat(userCountryID, distanceRule);
             if (String.IsNullOrEmpty(result))
-                result = PhoneNumberData.GetPhoneFormatFromXML(userCountryID, distanceRule);
+                result = xmlDataProvider.GetPhoneFormat(userCountryID, distanceRule);
 
             return result;
         }
@@ -252,22 +261,22 @@ namespace HomeSen.Helpers.Conversion
 
         #region Country/City/Carrier Name
 
-        public static string GetCountryName(int countryID)
+        public string GetCountryName(int countryID)
         {
             string result = "";
 
-            result = PhoneNumberData.GetCountryNameFromRegistry(countryID);
+            result = registryDataProvider.GetCountryName(countryID);
             if (String.IsNullOrEmpty(result))
-                result = PhoneNumberData.GetCountryNameFromXML(countryID);
+                result = xmlDataProvider.GetCountryName(countryID);
 
             return result;
         }
 
-        public static string GetCountryNameByNumber(string number)
+        public string GetCountryNameByNumber(string number)
         {
             if (String.IsNullOrEmpty(number))
                 return String.Empty;
-            if (Regex.IsMatch(number, PHONE_NUMBER_PATTERN) == false)
+            if (Regex.IsMatch(number, PhoneNumberConstants.PHONE_NUMBER_PATTERN) == false)
                 return String.Empty;
 
             string countryID = GetCountryID(number);
@@ -277,25 +286,25 @@ namespace HomeSen.Helpers.Conversion
             return GetCountryName(int.Parse(countryID));
         }
 
-        public static string GetAreaName(string areaCode)
+        public string GetAreaName(string areaCode)
         {
             if (String.IsNullOrEmpty(areaCode))
                 return String.Empty;
 
             string result = "";
 
-            result = PhoneNumberData.GetCityName(areaCode);
+            result = xmlDataProvider.GetCityName(areaCode);
             if (String.IsNullOrEmpty(result))
-                result = PhoneNumberData.GetCarrierName(areaCode);
+                result = xmlDataProvider.GetCarrierName(areaCode);
 
             return result;
         }
 
-        public static string GetAreaNameByNumber(string number)
+        public string GetAreaNameByNumber(string number)
         {
             if (String.IsNullOrEmpty(number))
                 return String.Empty;
-            if (Regex.IsMatch(number, PHONE_NUMBER_PATTERN) == false)
+            if (Regex.IsMatch(number, PhoneNumberConstants.PHONE_NUMBER_PATTERN) == false)
                 return String.Empty;
 
             string areaCode = GetFullAreaCode(number);

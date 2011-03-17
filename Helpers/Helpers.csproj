@@ -43,16 +43,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Conversion\PhoneNumberData.cs" />
+    <Compile Include="Conversion\PhoneNumberDataRegistry.cs" />
+    <Compile Include="Conversion\PhoneNumberDataXml.cs" />
     <Compile Include="Conversion\PhoneNumbers.cs" />
     <Compile Include="Conversion\StringCreator.cs" />
     <Compile Include="Crypto\Symmetric.cs" />
+    <Compile Include="Interfaces\IPhoneNumberDataRegistry.cs" />
+    <Compile Include="Interfaces\IPhoneNumberDataXml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Types\PhoneNumberConstants.cs" />
+    <Compile Include="Types\PhoneNumberEnums.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -67,8 +72,8 @@
     <None Include="Resources\Cities.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Crypto.cd" />
     <None Include="PhoneNumbers.cd" />
+    <None Include="Crypto.cd" />
     <None Include="HomeSen.snk.pfx" />
     <None Include="Resources\Mobiles.xml" />
   </ItemGroup>

@@ -1,24 +1,54 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
-  <Class Name="HomeSen.Helpers.Conversion.PhoneNumberData">
-    <Position X="4.25" Y="0.5" Width="4.25" />
+  <Class Name="HomeSen.Helpers.Conversion.PhoneNumberDataRegistry" BaseTypeListCollapsed="true">
+    <Position X="4.5" Y="2.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAIAAgAAABAAiQCACAAAQAEGAAAAAAAAgACBACAAAAA=</HashCode>
-      <FileName>Conversion\PhoneNumberData.cs</FileName>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAQAACAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Conversion\PhoneNumberDataRegistry.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HomeSen.Helpers.Conversion.PhoneNumberDataXml" BaseTypeListCollapsed="true">
+    <Position X="7.25" Y="3.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAIARAAAQCACAAAAAAEAAAAAAAAAAIAACAAAAA=</HashCode>
+      <FileName>Conversion\PhoneNumberDataXml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="HomeSen.Helpers.Conversion.PhoneNumbers">
-    <Position X="0.5" Y="0.5" Width="3" />
+    <Position X="0.5" Y="3" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>CAAAAAAIAQAAABAACEAgwCAGAAAAAAAAAACAAAAAiQA=</HashCode>
+      <HashCode>CgAAAAAIAQAAABAACEAgQAAGAAAAAAAAAACAAAAAgQg=</HashCode>
       <FileName>Conversion\PhoneNumbers.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Enum Name="HomeSen.Helpers.Conversion.DISTANCE_RULE">
-    <Position X="0.5" Y="5.25" Width="1.5" />
+  <Class Name="HomeSen.Helpers.Types.PhoneNumberConstants">
+    <Position X="0.5" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAgAAAAAAAgCAAAAAAAAAAgACAAAAACAA=</HashCode>
+      <FileName>Types\PhoneNumberConstants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="HomeSen.Helpers.Interfaces.IPhoneNumberDataRegistry">
+    <Position X="4.5" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAQAACAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IPhoneNumberDataRegistry.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="HomeSen.Helpers.Interfaces.IPhoneNumberDataXml">
+    <Position X="7.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAQAAAACACAAAAAAEAAAAAAAAAAIAACAAAAA=</HashCode>
+      <FileName>Interfaces\IPhoneNumberDataXml.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="HomeSen.Helpers.Types.DISTANCE_RULE">
+    <Position X="4.5" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAgAAEAAAA=</HashCode>
-      <FileName>Conversion\PhoneNumbers.cs</FileName>
+      <FileName>Types\PhoneNumberEnums.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />
