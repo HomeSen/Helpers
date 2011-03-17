@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using HomeSen.Helpers.Types;
 
-namespace HomeSen.Helpers.Tests.Conversion
+namespace HomeSen.Helpers.Conversion.Tests
 {
     [TestFixture]
     public class PhoneNumberDataXmlTests

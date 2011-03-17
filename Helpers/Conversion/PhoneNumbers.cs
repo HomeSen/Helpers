@@ -20,23 +20,11 @@ namespace HomeSen.Helpers.Conversion
 
         #region Constructors
 
-        public PhoneNumbers()
-        {
-            this.xmlDataProvider = new PhoneNumberDataXml();
-            this.registryDataProvider = new PhoneNumberDataRegistry();
-        }
+        public PhoneNumbers() : this(new PhoneNumberDataXml(), new PhoneNumberDataRegistry()) { }
 
-        internal PhoneNumbers(IPhoneNumberDataXml xmlDataProvider)
-        {
-            this.xmlDataProvider = xmlDataProvider;
-            this.registryDataProvider = new PhoneNumberDataRegistry();
-        }
+        internal PhoneNumbers(IPhoneNumberDataXml xmlDataProvider) : this(xmlDataProvider, new PhoneNumberDataRegistry()) { }
 
-        internal PhoneNumbers(IPhoneNumberDataRegistry registryDataProvider)
-        {
-            this.xmlDataProvider = new PhoneNumberDataXml();
-            this.registryDataProvider = registryDataProvider;
-        }
+        internal PhoneNumbers(IPhoneNumberDataRegistry registryDataProvider) : this(new PhoneNumberDataXml(), registryDataProvider) { }
 
         internal PhoneNumbers(IPhoneNumberDataXml xmlDataProvider, IPhoneNumberDataRegistry registryDataProvider)
         {

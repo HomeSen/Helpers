@@ -4,7 +4,7 @@ using HomeSen.Helpers.Types;
 using Rhino.Mocks;
 using Microsoft.Win32;
 
-namespace HomeSen.Helpers.Tests.Conversion
+namespace HomeSen.Helpers.Conversion.Tests
 {
     [TestFixture]
     public class PhoneNumberDataRegistryTests
@@ -21,41 +21,49 @@ namespace HomeSen.Helpers.Tests.Conversion
 
         #region GetPhoneFormat Tests
         [Test]
-        public void GetPhoneFormatFromRegistry_GetCanonicalFormat_ReturnsCanonicalFormat()
+        public void GetPhoneFormat_GetCanonicalFormat_ReturnsCanonicalFormat()
         {
             int countryID = 49;
             string expected = PhoneNumberConstants.CANONICAL_FORMAT;
-            string actual = PhoneNumberData.GetPhoneFormatFromRegistry(countryID, DISTANCE_RULE.CANONICAL);
+
+            PhoneNumberDataRegistry registryDataProvider = new PhoneNumberDataRegistry();
+            string actual = registryDataProvider.GetPhoneFormat(countryID, DISTANCE_RULE.CANONICAL);
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void GetPhoneFormatFromRegistry_GetInternationalFormatForGermany_ResturnsGermanInternationalFormat()
+        public void GetPhoneFormat_GetInternationalFormatForGermany_ResturnsGermanInternationalFormat()
         {
             int countryID = 49;
             string expected = "00EFG";
-            string actual = PhoneNumberData.GetPhoneFormatFromRegistry(countryID, DISTANCE_RULE.InternationalRule);
+
+            PhoneNumberDataRegistry registryDataProvider = new PhoneNumberDataRegistry();
+            string actual = registryDataProvider.GetPhoneFormat(countryID, DISTANCE_RULE.InternationalRule);
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void GetPhoneFormatFromRegistry_GetLongDistanceFormatForGermany_ReturnsGermanLongDistanceFormat()
+        public void GetPhoneFormat_GetLongDistanceFormatForGermany_ReturnsGermanLongDistanceFormat()
         {
             int countryID = 49;
             string expected = "0FG";
-            string actual = PhoneNumberData.GetPhoneFormatFromRegistry(countryID, DISTANCE_RULE.LongDistanceRule);
+
+            PhoneNumberDataRegistry registryDataProvider = new PhoneNumberDataRegistry();
+            string actual = registryDataProvider.GetPhoneFormat(countryID, DISTANCE_RULE.LongDistanceRule);
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void GetPhoneFormatFromRegistry_GetSameAreaFormatForGermany_ReturnsGermanSameAreaFormat()
+        public void GetPhoneFormat_GetSameAreaFormatForGermany_ReturnsGermanSameAreaFormat()
         {
             int countryID = 49;
             string expected = "G";
-            string actual = PhoneNumberData.GetPhoneFormatFromRegistry(countryID, DISTANCE_RULE.SameAreaRule);
+
+            PhoneNumberDataRegistry registryDataProvider = new PhoneNumberDataRegistry();
+            string actual = registryDataProvider.GetPhoneFormat(countryID, DISTANCE_RULE.SameAreaRule);
 
             Assert.AreEqual(expected, actual);
         }
@@ -63,23 +71,27 @@ namespace HomeSen.Helpers.Tests.Conversion
 
         #region GetCountryName Tests
         [Test]
-        public void GetCountryNameFromRegistry_InvalidCountryID_ReturnsEmptyString()
+        public void GetCountryName_InvalidCountryID_ReturnsEmptyString()
         {
             int countryID = 0;
-            string actual = PhoneNumberData.GetCountryNameFromRegistry(countryID);
+
+            PhoneNumberDataRegistry registryDataProvider = new PhoneNumberDataRegistry();
+            string actual = registryDataProvider.GetCountryName(countryID);
 
             Assert.IsEmpty(actual);
         }
 
         [Test]
-        public void GetCountryNameFromRegistry_GermanCountryID_ReturnsGermany()
+        public void GetCountryName_GermanCountryID_ReturnsGermany()
         {
             int countryID = 49;
             // TODO: The registry contains the localized names of the countries,
             // thus the expected result needs to be translated to the correct language.
             //string expected = "Germany";
             string expected = "Deutschland";
-            string actual = PhoneNumberData.GetCountryNameFromRegistry(countryID);
+            
+            PhoneNumberDataRegistry registryDataProvider = new PhoneNumberDataRegistry();
+            string actual = registryDataProvider.GetCountryName(countryID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -91,7 +103,9 @@ namespace HomeSen.Helpers.Tests.Conversion
         {
             // TODO: change to default location, if test fails (ControlPanel->Telephony->Location)
             string expected = "351";
-            string actual = PhoneNumberData.GetUserAreaCode();
+
+            PhoneNumberDataRegistry registryDataProvider = new PhoneNumberDataRegistry();
+            string actual = registryDataProvider.GetUserAreaCode();
 
             Assert.AreEqual(expected, actual);
         }
@@ -103,7 +117,9 @@ namespace HomeSen.Helpers.Tests.Conversion
         {
             // TODO: change to default location, if test fails (ControlPanel->Telephony->Location)
             string expected = "49";
-            string actual = PhoneNumberData.GetUserCountryID();
+
+            PhoneNumberDataRegistry registryDataProvider = new PhoneNumberDataRegistry();
+            string actual = registryDataProvider.GetUserCountryID();
 
             Assert.AreEqual(expected, actual);
         }
