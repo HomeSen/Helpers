@@ -23,7 +23,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         {
             int countryID = 49;
             string expected = PhoneNumberConstants.CANONICAL_FORMAT;
-            string actual = PhoneNumberData.GetPhoneFormatFromXML(countryID, DISTANCE_RULE.CANONICAL);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetPhoneFormat(countryID, DISTANCE_RULE.CANONICAL);
 
             Assert.AreEqual(expected, actual);
         }
@@ -33,7 +35,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         {
             int countryID = 49;
             string expected = "00EFG";
-            string actual = PhoneNumberData.GetPhoneFormatFromXML(countryID, DISTANCE_RULE.InternationalRule);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetPhoneFormat(countryID, DISTANCE_RULE.InternationalRule);
 
             Assert.AreEqual(expected, actual);
         }
@@ -43,7 +47,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         {
             int countryID = 49;
             string expected = "0FG";
-            string actual = PhoneNumberData.GetPhoneFormatFromXML(countryID, DISTANCE_RULE.LongDistanceRule);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetPhoneFormat(countryID, DISTANCE_RULE.LongDistanceRule);
 
             Assert.AreEqual(expected, actual);
         }
@@ -53,7 +59,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         {
             int countryID = 49;
             string expected = "G";
-            string actual = PhoneNumberData.GetPhoneFormatFromXML(countryID, DISTANCE_RULE.SameAreaRule);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetPhoneFormat(countryID, DISTANCE_RULE.SameAreaRule);
 
             Assert.AreEqual(expected, actual);
         }
@@ -64,7 +72,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         public void GetCountryIDFromXML_EmptyAreaCode_ResturnsEmptyString()
         {
             string areaCode = "";
-            string actual = PhoneNumberData.GetCountryIDFromXML(areaCode);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetCountryID(areaCode);
 
             Assert.IsEmpty(actual);
         }
@@ -74,7 +84,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         {
             string areaCode = "+49351";
             string expected = "49";
-            string actual = PhoneNumberData.GetCountryIDFromXML(areaCode);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetCountryID(areaCode);
 
             Assert.AreEqual(expected, actual);
         }
@@ -85,7 +97,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         public void GetCountryCode_EmptyString_ReturnsEmptyString()
         {
             string code = "";
-            string actual = PhoneNumberData.GetCountryCode(code);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetCountryCode(code);
 
             Assert.IsEmpty(actual);
         }
@@ -94,7 +108,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         public void GetCountryCode_InvalidCode_ReturnsEmptyString()
         {
             string code = "000";
-            string actual = PhoneNumberData.GetCountryCode(code);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetCountryCode(code);
 
             Assert.IsEmpty(actual);
         }
@@ -104,7 +120,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         {
             string code = "49351";
             string expected = "49";
-            string actual = PhoneNumberData.GetCountryCode(code);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetCountryCode(code);
 
             Assert.AreEqual(expected, actual);
         }
@@ -115,7 +133,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         public void GetCountryNameFromXML_InvalidCountryID_ResturnsEmptyString()
         {
             int countryID = 0;
-            string actual = PhoneNumberData.GetCountryNameFromXML(countryID);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetCountryName(countryID);
 
             Assert.IsEmpty(actual);
         }
@@ -125,7 +145,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         {
             int countryID = 49;
             string expected = "Germany";
-            string actual = PhoneNumberData.GetCountryNameFromXML(countryID);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetCountryName(countryID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -136,7 +158,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         public void GetCityName_EmptyAreaCode_ReturnsEmptyString()
         {
             string areaCode = String.Empty;
-            string actual = PhoneNumberData.GetCityName(areaCode);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetCityName(areaCode);
 
             Assert.IsEmpty(actual);
         }
@@ -145,7 +169,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         public void GetCityName_InvalidAreaCode_ReturnsEmptyString()
         {
             string areaCode = "123456";
-            string actual = PhoneNumberData.GetCityName(areaCode);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetCityName(areaCode);
 
             Assert.IsEmpty(actual);
         }
@@ -155,7 +181,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         {
             string areaCode = "+49351";
             string expected = "Dresden";
-            string actual = PhoneNumberData.GetCityName(areaCode);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetCityName(areaCode);
 
             Assert.AreEqual(expected, actual);
         }
@@ -166,7 +194,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         public void GetCarrierName_EmptyAreaCode_ReturnsEmptyString()
         {
             string areaCode = String.Empty;
-            string actual = PhoneNumberData.GetCarrierName(areaCode);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetCarrierName(areaCode);
 
             Assert.IsEmpty(actual);
         }
@@ -175,7 +205,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         public void GetCarrierName_InvalidAreaCode_ReturnsEmptyString()
         {
             string areaCode = "123456";
-            string actual = PhoneNumberData.GetCarrierName(areaCode);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetCarrierName(areaCode);
 
             Assert.IsEmpty(actual);
         }
@@ -185,7 +217,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         {
             string areaCode = "+491511";
             string expected = "T-Mobile (D1)";
-            string actual = PhoneNumberData.GetCarrierName(areaCode);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetCarrierName(areaCode);
 
             Assert.AreEqual(expected, actual);
         }
@@ -196,7 +230,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         public void GetAreaCode_EmptyCode_ReturnsEmptyString()
         {
             string code = String.Empty;
-            string actual = PhoneNumberData.GetAreaCode(code);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetAreaCode(code);
 
             Assert.IsEmpty(actual);
         }
@@ -205,7 +241,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         public void GetAreaCode_InvalidCode_ReturnsEmptyString()
         {
             string code = "abcd";
-            string actual = PhoneNumberData.GetAreaCode(code);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetAreaCode(code);
 
             Assert.IsEmpty(actual);
         }
@@ -215,7 +253,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         {
             string code = "+4935126";
             string expected = "+49351";
-            string actual = PhoneNumberData.GetAreaCode(code);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetAreaCode(code);
 
             Assert.AreEqual(expected, actual);
         }
@@ -225,7 +265,9 @@ namespace HomeSen.Helpers.Conversion.Tests
         {
             string code = "+49151124";
             string expected = "+491511";
-            string actual = PhoneNumberData.GetAreaCode(code);
+
+            PhoneNumberDataXml xmlDataProvider = new PhoneNumberDataXml();
+            string actual = xmlDataProvider.GetAreaCode(code);
 
             Assert.AreEqual(expected, actual);
         }
