@@ -1,8 +1,5 @@
-﻿using System;
+﻿using HomeSen.Helpers.Types;
 using NUnit.Framework;
-using HomeSen.Helpers.Types;
-using Rhino.Mocks;
-using Microsoft.Win32;
 
 namespace HomeSen.Helpers.Conversion.Tests
 {

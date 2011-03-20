@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using HomeSen.Helpers.Interfaces.Registry;
+﻿using HomeSen.Helpers.Interfaces;
 
 namespace HomeSen.Helpers.Proxies
 {

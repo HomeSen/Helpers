@@ -1,13 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Win32;
+using HomeSen.Helpers.Interfaces;
+using HomeSen.Helpers.Proxies;
 using HomeSen.Helpers.Types;
 
 namespace HomeSen.Helpers.Conversion
 {
-    class PhoneNumberDataRegistry : Interfaces.IPhoneNumberDataRegistry
+    class PhoneNumberDataRegistry : IPhoneNumberDataRegistry
     {
+        #region Fields
+
+        private IRegistry _registryProxy;
+
+        #endregion
+
+        #region Constructors
+
+        public PhoneNumberDataRegistry() : this(new Registry()) { }
+
+        internal PhoneNumberDataRegistry (IRegistry registry)
+	    {
+            this._registryProxy = registry;
+	    }
+
+        #endregion
+        
+        
         #region User Data
 
         /// <summary>
@@ -16,13 +33,13 @@ namespace HomeSen.Helpers.Conversion
         /// <returns>A string containing the user's country ID or <value>String.Empty</value>, if an error occured.</returns>
         public string GetUserCountryID()
         {
-            RegistryKey hklmLocations = Registry.LocalMachine.OpenSubKey(PhoneNumberConstants.REGISTRY_LOCATIONS);
+            IRegistryKey hklmLocations = _registryProxy.LocalMachine.OpenSubKey(PhoneNumberConstants.REGISTRY_LOCATIONS);
             try
             {
                 object currentID = hklmLocations.GetValue("CurrentID");
                 if (currentID == null)
                     return String.Empty;
-                RegistryKey currentLocation = hklmLocations.OpenSubKey("Location" + currentID);
+                IRegistryKey currentLocation = hklmLocations.OpenSubKey("Location" + currentID);
                 object country = currentLocation.GetValue("Country");
                 if (country == null)
                     return String.Empty;
@@ -38,13 +55,13 @@ namespace HomeSen.Helpers.Conversion
         /// <returns>A string containing the user's area code or <value>String.Empty</value>, if an error occured.</returns>
         public string GetUserAreaCode()
         {
-            RegistryKey hklmLocations = Registry.LocalMachine.OpenSubKey(PhoneNumberConstants.REGISTRY_LOCATIONS);
+            IRegistryKey hklmLocations = _registryProxy.LocalMachine.OpenSubKey(PhoneNumberConstants.REGISTRY_LOCATIONS);
             try
             {
                 object currentID = hklmLocations.GetValue("CurrentID");
                 if (currentID == null)
                     return String.Empty;
-                RegistryKey currentLocation = hklmLocations.OpenSubKey("Location" + currentID);
+                IRegistryKey currentLocation = hklmLocations.OpenSubKey("Location" + currentID);
                 object areaCode = currentLocation.GetValue("AreaCode");
                 if (areaCode == null)
                     return String.Empty;
@@ -70,9 +87,9 @@ namespace HomeSen.Helpers.Conversion
             if (distanceRule == DISTANCE_RULE.CANONICAL)
                 return PhoneNumberConstants.CANONICAL_FORMAT;
 
-            RegistryKey hklmCountry = Registry.LocalMachine.OpenSubKey(PhoneNumberConstants.REGISTRY_COUNTRYLIST_LEGACY);
+            IRegistryKey hklmCountry = _registryProxy.LocalMachine.OpenSubKey(PhoneNumberConstants.REGISTRY_COUNTRYLIST_LEGACY);
             if (hklmCountry == null)
-                hklmCountry = Registry.LocalMachine.OpenSubKey(PhoneNumberConstants.REGISTRY_COUNTRYLIST_MODERN);
+                hklmCountry = _registryProxy.LocalMachine.OpenSubKey(PhoneNumberConstants.REGISTRY_COUNTRYLIST_MODERN);
 
             try
             {
@@ -95,9 +112,9 @@ namespace HomeSen.Helpers.Conversion
         {
             string result = "";
 
-            RegistryKey hklmCountry = Registry.LocalMachine.OpenSubKey(PhoneNumberConstants.REGISTRY_COUNTRYLIST_LEGACY);
+            IRegistryKey hklmCountry = _registryProxy.LocalMachine.OpenSubKey(PhoneNumberConstants.REGISTRY_COUNTRYLIST_LEGACY);
             if (hklmCountry == null)
-                hklmCountry = Registry.LocalMachine.OpenSubKey(PhoneNumberConstants.REGISTRY_COUNTRYLIST_MODERN);
+                hklmCountry = _registryProxy.LocalMachine.OpenSubKey(PhoneNumberConstants.REGISTRY_COUNTRYLIST_MODERN);
             if (hklmCountry == null)
                 return String.Empty;
 

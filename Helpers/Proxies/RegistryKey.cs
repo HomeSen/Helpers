@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using HomeSen.Helpers.Interfaces.Registry;
+﻿using HomeSen.Helpers.Interfaces;
 
 namespace HomeSen.Helpers.Proxies
 {
@@ -11,11 +8,17 @@ namespace HomeSen.Helpers.Proxies
 
         public static explicit operator Microsoft.Win32.RegistryKey(RegistryKey obj)
         {
+            if (obj == null)
+                return null;
+
             return obj._regKey;
         }
 
         public static implicit operator RegistryKey(Microsoft.Win32.RegistryKey obj)
         {
+            if (obj == null)
+                return null;
+
             return new RegistryKey(obj);
         }
 
@@ -24,7 +27,7 @@ namespace HomeSen.Helpers.Proxies
         
         #region Fields
 
-        private Microsoft.Win32.RegistryKey _regKey = null;
+        private Microsoft.Win32.RegistryKey _regKey;
         
         #endregion
 
