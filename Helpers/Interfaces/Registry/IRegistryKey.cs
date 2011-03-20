@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HomeSen.Helpers.Interfaces.Registry
 {
-    public interface IRegistryKey : IDisposable
+    public interface IRegistryKey
     {
         #region Properties
 
@@ -13,6 +13,7 @@ namespace HomeSen.Helpers.Interfaces.Registry
         int ValueCount { get; }
 
         #endregion
+
 
         #region Methods
 
