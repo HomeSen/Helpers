@@ -1,0 +1,1 @@
+This branch was used to introduce custom proxy classes to fake access to the Windows Registry and thus to simplify unit-testing and especially decaoupling from external dependencies.
