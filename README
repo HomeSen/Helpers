@@ -1,0 +1,25 @@
+HomeSen.Helpers
+
+This is a collection of different helper classes for .NET 2.0/3.5 that I found I need (at least) more than once. So I decided to extract a helper library.
+
+Currently integrated helpers:
+
+1. HomeSen.Helpers.Conversion.StringCreator:
+This class converts byte-Arrays to different string representations
+
+2. HomeSen.Helpers.Conversion.PhoneNumbers:
+This class is used to format phone numbers and uses the 2 additional classes PhoneNumberDataRegistry and PhoneNumberDataXml to perform it's job.
+
+3. HomeSen.Helpers.Crypto.Symmetric
+This class simplifies the usage of symmetric crypto providers.
+
+4. HomeSen.Helpers.Proxy.Registry
+This class is a proxy for the static Microsoft.Win32.Registry class to decouple it when performing unit tests. There is also an Interface to simplify faking of Registry access.
+
+5. HomeSen.Helpers.Proxy.RegistryKey
+This class encapsulates the Microsoft.Win32.RegistryKey class by holding an internal field of that kind and redirecting calls to the private field. The corresponding Interface makes simplifies the faking access to the Windows Registry.
+
+
+Most code isn't properly documented, yet. But this will come soon.
+
+The VisualStudio 2008 Solution also contains an unit-test project that makes use of the NUnit Framework and Rhino.Mocks (.dll and .xml included in the solution directory).
