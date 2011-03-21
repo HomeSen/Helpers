@@ -1,0 +1,3 @@
+This branch was abandoned to the favor of the interfaces and custom_proxy branches.
+
+It was used to circumvent the dependency on Microsoft.Win32.Registry by introducing an abstract class that can be used to fake access to the Windows Registry.
