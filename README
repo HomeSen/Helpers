@@ -1,0 +1,2 @@
+This branch was used to split the data provider into separate classes and extracted Interfaces from them to make unit-testing and faking easier.
+It is the ancestor of custom_proxies which decoupled some dependencies.
